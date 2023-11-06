@@ -3,11 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:mom/core/viewmodel/stripe_view_model.dart';
 import 'package:mom/screens/auth_screens/splashscreen.dart';
 import 'package:mom/widgets/components/button_design.dart';
 import 'package:mom/widgets/ui_widgets/close_button.dart';
 import 'package:mom/widgets/ui_widgets/custom_container.dart';
 import 'package:mom/widgets/ui_widgets/custom_header.dart';
+import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class PaywallScreen extends StatefulWidget {
@@ -114,7 +116,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
   @override
   Widget build(BuildContext context) {
     final selectedPlan = Plan.getPlans()[selectedPlanIndex];
-
+    final stripeViewModel = context.watch<StripeViewModel>();
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -165,16 +167,26 @@ class _PaywallScreenState extends State<PaywallScreen> {
           ),
         ),
       ),
-      floatingActionButton: ButtonDesign(
-        btnText: "SUBSCRIBE",
-        btnFunction: () {
-          final selecPlan = Plan.getPlans()[selectedPlanIndex];
-          openCheckout(
-              amount: (selecPlan.price * 100).toString(),
-              title: selecPlan.name,
-              description: selecPlan.name);
-        },
-        marginHorizontal: 30,
+      floatingActionButton: Container(
+        constraints: const BoxConstraints(maxHeight: 80),
+        child: ButtonDesign(
+          btnText: "SUBSCRIBE",
+          btnFunction: () async {
+            final selecPlan = Plan.getPlans()[selectedPlanIndex];
+            bool success = await stripeViewModel.initPaymentSheet(
+                context: context, priceId: selecPlan.priceId);
+            // if (widget.title != null && success) {
+            //   Navigator.pop(context);
+            // } else {
+            //   locator<AppRouter>().push(const FollowingTeacherRoute());
+            // }
+            // openCheckout(
+            //     amount: (selecPlan.price * 100).toString(),
+            //     title: selecPlan.name,
+            //     description: selecPlan.name);
+          },
+          marginHorizontal: 30,
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
@@ -295,9 +307,14 @@ class PlanCard extends StatelessWidget {
 class Plan {
   final String name;
   final int price;
+  final String priceId;
   final List<String> features;
 
-  Plan({required this.name, required this.price, required this.features});
+  Plan(
+      {required this.name,
+      required this.price,
+      required this.features,
+      required this.priceId});
 
   static List<Plan> getPlans() {
     return [
@@ -310,6 +327,7 @@ class Plan {
           'Sign up with a therapist on extra payment',
           'Submit your story to our podcast community',
         ],
+        priceId: 'price_1O8j0NSBDQQZAdQFUdY2EpFf',
       ),
       Plan(
         name: 'Quarterly',
@@ -320,6 +338,7 @@ class Plan {
           'Sign up with a therapist - 1st session free',
           'Submit your story to our podcast community',
         ],
+        priceId: 'price_1O8j0NSBDQQZAdQFvTf1WYQA',
       ),
       Plan(
         name: 'Annual',
@@ -331,6 +350,7 @@ class Plan {
           'Submit your story to our podcast community',
           'Have a free mental wellness session at your place every quarter',
         ],
+        priceId: 'price_1O9U1vSBDQQZAdQFvv3gUeWM',
       ),
     ];
   }

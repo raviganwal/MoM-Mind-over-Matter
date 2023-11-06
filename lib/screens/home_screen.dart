@@ -60,55 +60,60 @@ class _HomeScreenState extends State<HomeScreen> {
               //       Get.to(() => IntroScreen());
               //     },
               //     child: const Text("Button")),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 30),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Obx(() => Text(
-                              "Hello, ${hiveController.userData.value.firstName}",
-                              style: GoogleFonts.montserrat(
-                                fontSize: 25,
-                                color: const Color(0xFF58315A),
-                                fontWeight: FontWeight.w600,
-                              ),
-                            )),
-                        Text(
-                          "Ready to start your day with MoM?",
-                          style: GoogleFonts.montserrat(
-                            fontSize: 16,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500
-                            ,
+              InkWell(
+                onTap: (){
+                  Get.to(() => const ProfileScreen());
+                },
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Obx(() => Text(
+                                "Hello, ${hiveController.userData.value.firstName}",
+                                style: GoogleFonts.montserrat(
+                                  fontSize: 25,
+                                  color: const Color(0xFF58315A),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              )),
+                          Text(
+                            "Ready to start your day with MoM?",
+                            style: GoogleFonts.montserrat(
+                              fontSize: 16,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500
+                              ,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    // GestureDetector(
-                    //   onTap: () => Get.to(() => const ProfileScreen()),
-                    //   child: Container(
-                    //     padding: const EdgeInsets.all(8),
-                    //     decoration: BoxDecoration(
-                    //       color: Colors.grey.shade100,
-                    //       borderRadius: BorderRadius.circular(16),
-                    //     ),
-                    //     child: CachedNetworkImage(
-                    //       imageUrl: firebaseAuth.currentUser!.photoURL ?? "",
-                    //       height: 35,
-                    //       width: 35,
-                    //       placeholder: (context, url) =>
-                    //           const CircularProgressIndicator(), // Placeholder widget
-                    //       errorWidget: (context, url, error) => const Icon(
-                    //           Icons.person,
-                    //           size: 32), // Error widget
-                    //     ),
-                    //   ),
-                    // ),
-                  ],
+                        ],
+                      ),
+                      // GestureDetector(
+                      //   onTap: () => Get.to(() => const ProfileScreen()),
+                      //   child: Container(
+                      //     padding: const EdgeInsets.all(8),
+                      //     decoration: BoxDecoration(
+                      //       color: Colors.grey.shade100,
+                      //       borderRadius: BorderRadius.circular(16),
+                      //     ),
+                      //     child: CachedNetworkImage(
+                      //       imageUrl: firebaseAuth.currentUser!.photoURL ?? "",
+                      //       height: 35,
+                      //       width: 35,
+                      //       placeholder: (context, url) =>
+                      //           const CircularProgressIndicator(), // Placeholder widget
+                      //       errorWidget: (context, url, error) => const Icon(
+                      //           Icons.person,
+                      //           size: 32), // Error widget
+                      //     ),
+                      //   ),
+                      // ),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 24),
